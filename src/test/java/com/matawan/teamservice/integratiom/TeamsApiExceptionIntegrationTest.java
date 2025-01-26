@@ -3,8 +3,6 @@ package com.matawan.teamservice.integratiom;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matawan.teamservice.dtos.request.PlayerRequest;
 import com.matawan.teamservice.dtos.request.TeamRequest;
-import com.matawan.teamservice.dtos.response.PlayerResponse;
-import com.matawan.teamservice.dtos.response.TeamResponse;
 import com.matawan.teamservice.entity.Team;
 import com.matawan.teamservice.repository.TeamRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -17,13 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
