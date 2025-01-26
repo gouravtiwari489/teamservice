@@ -33,7 +33,7 @@ To get the project up and running locally, follow these steps:
     cd teamservice
     ```
 
-3. **Install dependencies**:
+2. **Install dependencies**:
     - Make sure all dependencies are correctly downloaded:
     ```bash
     mvn install
