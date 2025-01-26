@@ -8,66 +8,93 @@ import com.matawan.teamservice.entity.Player;
 import com.matawan.teamservice.entity.Team;
 import com.matawan.teamservice.exception.TeamNotFoundException;
 import com.matawan.teamservice.repository.TeamRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+@Slf4j
 public class TeamService {
 
-    private final TeamRepository teamRepository;
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Transactional
     public TeamResponse saveTeam(TeamRequest teamRequest) {
+        log.info("Saving a new team with name: {}", teamRequest.getName());
         Team team = convertToEntity(teamRequest);
         team.getPlayers().forEach(player -> player.setTeam(team));
-        // Save team
         Team savedTeam = teamRepository.save(team);
+        log.info("Team saved successfully with ID: {}", savedTeam.getId());
         return convertToDto(savedTeam);
-    }
-
-    public List<TeamResponse> getAllTeams() {
-        return teamRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-
-    public TeamResponse getTeamById(Long id) {
-        Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new TeamNotFoundException("Team not found by id: "+id));
-        return convertToDto(team);
     }
 
     @Transactional
     public TeamResponse updateTeam(Long id, TeamRequest updatedTeamRequest) {
-        Team existingTeam = teamRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
+        log.info("Updating team with ID: {}", id);
 
-        // Update team fields
+        Team existingTeam = teamRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Team not found with ID: {}", id);
+                    return new TeamNotFoundException("Team not found by id: " + id);
+                });
+
+
+        log.debug("Existing team found: {}", existingTeam);
         existingTeam.setName(updatedTeamRequest.getName());
         existingTeam.setAcronym(updatedTeamRequest.getAcronym());
         existingTeam.setBudget(updatedTeamRequest.getBudget());
 
-        // Update players
-        existingTeam.getPlayers().clear();
+        List<Player> existingPlayers = existingTeam.getPlayers();
+
+        Iterator<Player> iterator = existingPlayers.iterator();
+        while (iterator.hasNext()) {
+            Player player = iterator.next();
+            player.setTeam(null);
+            iterator.remove();
+        }
+
         List<Player> updatedPlayers = convertPlayerRequestsToPlayers(updatedTeamRequest.getPlayers());
-        updatedPlayers.forEach(player -> player.setTeam(existingTeam));
-        existingTeam.getPlayers().addAll(updatedPlayers);
+        updatedPlayers.forEach(player -> {
+            player.setTeam(existingTeam);
+            existingPlayers.add(player);
+        });
 
         Team updatedTeam = teamRepository.save(existingTeam);
+        log.info("Team updated successfully with ID: {}", updatedTeam.getId());
         return convertToDto(updatedTeam);
+    }
+
+    public List<TeamResponse> getAllTeams() {
+        log.info("Fetching all teams");
+        List<TeamResponse> teams = teamRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        log.info("Total teams found: {}", teams.size());
+        return teams;
+    }
+
+    public TeamResponse getTeamById(Long id) {
+        log.info("Fetching team with ID: {}", id);
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new TeamNotFoundException("Team not found by id: "+id));
+        log.info("Team found: {}", team);
+        return convertToDto(team);
     }
 
     @Transactional
     public void deleteTeam(Long id) {
+        log.info("Deleting team with ID: {}", id);
         if (!teamRepository.existsById(id)) {
             throw new TeamNotFoundException("Team not found by id: "+id);
         }
         teamRepository.deleteById(id);
+        log.info("Team deleted successfully with ID: {}", id);
     }
 
     private TeamResponse convertToDto(Team team) {

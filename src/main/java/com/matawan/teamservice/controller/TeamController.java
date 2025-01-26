@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controller for handling operations related to teams.
- * Provides CRUD operations for managing teams.
+ * Controller for handling CRUD operations related to teams.
  */
 @RestController
 @RequestMapping("/teams")
@@ -27,7 +26,7 @@ public class TeamController {
     private TeamService teamService;
 
     /**
-     * Creates a new team.
+     * Creates a new team
      *
      * @param teamRequest The team request object to be created.
      * @return A ResponseEntity containing the created team with HTTP status 201 Created.
@@ -35,11 +34,11 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<TeamResponse> createTeam(@Valid @RequestBody TeamRequest teamRequest) {
         TeamResponse createdTeam = teamService.saveTeam(teamRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTeam); // Return HTTP 201 Created with the created team
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdTeam);
     }
 
     /**
-     * Updates an existing team.
+     * Updates an existing team
      *
      * @param id The ID of the team to update.
      * @param updatedTeam The updated team data.
@@ -48,41 +47,41 @@ public class TeamController {
     @PutMapping("/{id}")
     public ResponseEntity<TeamResponse> updateTeam(@PathVariable Long id, @Valid @RequestBody TeamRequest updatedTeam) {
         TeamResponse team = teamService.updateTeam(id, updatedTeam);
-        return ResponseEntity.ok(team); // Return HTTP 200 OK with the updated team
+        return ResponseEntity.ok(team);
     }
 
     /**
-     * Retrieves all teams.
+     * Retrieves all teams
      *
-     * @return A ResponseEntity containing the list of all teams with HTTP status 200 OK.
+     * @return A ResponseEntity containing the list of all teams with HTTP status 200 OK
      */
     @GetMapping
     public ResponseEntity<List<TeamResponse>> getAllTeams() {
         List<TeamResponse> teams = teamService.getAllTeams();
-        return ResponseEntity.ok(teams); // Return HTTP 200 OK with the list of teams
+        return ResponseEntity.ok(teams);
     }
 
     /**
-     * Retrieves a team by its ID.
+     * Retrieves a team by its ID
      *
      * @param id The ID of the team to retrieve.
-     * @return A ResponseEntity containing the team with HTTP status 200 OK.
+     * @return A ResponseEntity containing the team with HTTP status 200 OK
      */
     @GetMapping("/{id}")
     public ResponseEntity<TeamResponse> getTeamById(@PathVariable @NotNull Long id) {
         TeamResponse team = teamService.getTeamById(id);
-        return ResponseEntity.ok(team); // Return HTTP 200 OK with the team
+        return ResponseEntity.ok(team);
     }
 
     /**
-     * Deletes a team by its ID.
+     * Deletes a team by its ID
      *
-     * @param id The ID of the team to delete.
-     * @return A ResponseEntity with HTTP status 204 No Content to indicate successful deletion.
+     * @param id The ID of the team to delete
+     * @return A ResponseEntity with HTTP status 204 No Content to indicate successful deletion
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
         teamService.deleteTeam(id);
-        return ResponseEntity.noContent().build(); // Return HTTP 204 No Content
+        return ResponseEntity.noContent().build();
     }
 }
