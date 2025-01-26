@@ -5,7 +5,6 @@ import com.matawan.teamservice.dtos.request.PlayerRequest;
 import com.matawan.teamservice.dtos.request.TeamRequest;
 import com.matawan.teamservice.dtos.response.PlayerResponse;
 import com.matawan.teamservice.dtos.response.TeamResponse;
-import com.matawan.teamservice.entity.Player;
 import com.matawan.teamservice.entity.Team;
 import com.matawan.teamservice.repository.TeamRepository;
 import org.junit.jupiter.api.BeforeEach;

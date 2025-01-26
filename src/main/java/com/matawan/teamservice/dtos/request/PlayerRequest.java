@@ -1,7 +1,6 @@
 package com.matawan.teamservice.dtos.request;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
