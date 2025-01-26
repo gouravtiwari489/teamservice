@@ -1,22 +1,10 @@
 # Spring Boot Project
 
-This is a Spring Boot project built with **Maven** as the build tool. 
-
-## Table of Contents
-- [About](#about)
-- [Technologies](#technologies)
-- [Requirements](#requirements)
-- [Setup](#setup)
-- [Running the Project](#running-the-project)
-- [Testing](#testing)
-- [Building the Project](#building-the-project)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
+This is a Spring Boot project built with **Maven** as the build tool.
 
 ## About
 
-Team management service for football game
+Team management service for football game. 
 
 ## Technologies
 
