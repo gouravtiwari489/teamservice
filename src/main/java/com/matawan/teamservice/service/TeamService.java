@@ -10,6 +10,8 @@ import com.matawan.teamservice.exception.TeamNotFoundException;
 import com.matawan.teamservice.repository.TeamRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,13 +72,11 @@ public class TeamService {
         return convertToDto(updatedTeam);
     }
 
-    public List<TeamResponse> getAllTeams() {
+    public Page<TeamResponse> getTeams(Pageable pageable) {
         log.info("Fetching all teams");
-        List<TeamResponse> teams = teamRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-        log.info("Total teams found: {}", teams.size());
-        return teams;
+        Page<TeamResponse> teamResponsePage = teamRepository.findAll(pageable).map(this::convertToDto);
+        log.info("Paginated team response: {}", teamResponsePage);
+        return teamResponsePage;
     }
 
     public TeamResponse getTeamById(Long id) {

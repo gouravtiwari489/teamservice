@@ -1,4 +1,4 @@
-package com.matawan.teamservice.integratiom;
+package com.matawan.teamservice.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matawan.teamservice.dtos.request.PlayerRequest;

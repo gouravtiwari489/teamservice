@@ -6,6 +6,8 @@ import com.matawan.teamservice.service.TeamService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -51,17 +53,6 @@ public class TeamController {
     }
 
     /**
-     * Retrieves all teams
-     *
-     * @return A ResponseEntity containing the list of all teams with HTTP status 200 OK
-     */
-    @GetMapping
-    public ResponseEntity<List<TeamResponse>> getAllTeams() {
-        List<TeamResponse> teams = teamService.getAllTeams();
-        return ResponseEntity.ok(teams);
-    }
-
-    /**
      * Retrieves a team by its ID
      *
      * @param id The ID of the team to retrieve.
@@ -83,5 +74,11 @@ public class TeamController {
     public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
         teamService.deleteTeam(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<TeamResponse>> getTeams(Pageable pageable) {
+        Page<TeamResponse> teamResponse = teamService.getTeams(pageable);
+        return ResponseEntity.ok(teamResponse);
     }
 }

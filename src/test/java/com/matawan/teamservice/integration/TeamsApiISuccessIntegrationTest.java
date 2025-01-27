@@ -1,4 +1,4 @@
-package com.matawan.teamservice.integratiom;
+package com.matawan.teamservice.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matawan.teamservice.dtos.request.PlayerRequest;
@@ -7,7 +7,6 @@ import com.matawan.teamservice.dtos.response.PlayerResponse;
 import com.matawan.teamservice.dtos.response.TeamResponse;
 import com.matawan.teamservice.entity.Team;
 import com.matawan.teamservice.repository.TeamRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class TeamsApiISuccessIntegrationTest {
 
     @BeforeEach
     public void setup() {
-
+        teamRepository.deleteAll();
         Team team = Team.builder()
                 .name("Nice")
                 .acronym("NC")
@@ -51,11 +50,6 @@ public class TeamsApiISuccessIntegrationTest {
                 .budget(1000000.00)
                 .build();
         teamRepository.save(team);
-    }
-
-    @AfterEach
-    public void clear() {
-        teamRepository.deleteAll();
     }
 
     @Test
