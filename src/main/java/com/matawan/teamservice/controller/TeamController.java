@@ -13,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
-
 /**
  * Controller for handling CRUD operations related to teams.
  */
@@ -42,7 +39,7 @@ public class TeamController {
     /**
      * Updates an existing team
      *
-     * @param id The ID of the team to update.
+     * @param id          The ID of the team to update.
      * @param updatedTeam The updated team data.
      * @return A ResponseEntity containing the updated team with HTTP status 200 OK.
      */
